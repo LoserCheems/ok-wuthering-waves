@@ -85,6 +85,12 @@ class Phrolova(BaseChar):
         return super().resonance_available()
 
     def heavy_and_liber(self):
+        if self.is_mouse_forte_full():
+            self.click_echo(time_out=0)
+            if self.resonance_available():
+                self.click_resonance()
+                self.continues_normal_attack(0.1)
+                self.task.wait_until(lambda: not self.resonance_available(), post_action=self.task.click, time_out=0.3)
         if self.heavy_click_forte(check_fun=self.is_mouse_forte_full):
             self.logger.debug('Phrolova heavy_click_forte')
             self.task.wait_until(lambda: self.click_liberation(wait_if_cd_ready=0), time_out=3)
